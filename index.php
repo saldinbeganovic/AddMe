@@ -1,19 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+include('main_php/header.php');
+?>
 
-<head>
-    <title>AddMe</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="assets/icons/favico.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-
-<body>
     <header class="header">
         <nav class="header__content">
             <div class="header__buttons">
-                <a href="index.html" class="header__home">
+                <a href="index.php" class="header__home">
                     <img src="assets/icons/logo-fav.png" alt="logo" width="110px" height="50px">
                 </a>
 
@@ -591,13 +583,13 @@
               </svg>
 
         </a>
-        <button class="navbar__button profile-button">
+        <a href="login-form.php" class="navbar__button profile-button">
             <div class="profile-button__border"></div>
             <div class="profile-button__picture">
                 <img src="assets/default-user.png" alt="User Picture">
             </div>
-        </button>
+        </a>
     </nav>
-</body>
-
-</html>
+    <?php
+    include('main_php/footer.php');
+    ?>

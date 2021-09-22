@@ -1,3 +1,6 @@
+<?php
+session_start();
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <!-- APP CSS -->
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
@@ -26,29 +29,25 @@
                             <img src="assets/icons/logo-fav.png" alt="Instagram logo" class="logo-light">
                             <img src="assets/icons/logo-fav.png" alt="Instagram logo" class="logo-dark">
                         </div>
+                        <form  action="functions/login_check.php" method="post">
                         <div class="signin-form" id="signin-form">
                             <div class="form-group">
                                 <div class="animate-input">
-                                    <span>
-                                        Phone number, username or email
-                                    </span>
-                                    <input type="text">
+                                  <input type="text" name="uname"  placeholder="Vnesi username" required="required" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="animate-input">
-                                    <span>
-                                        Password
-                                    </span>
-                                    <input type="password">
+                                    <input type="password" name="pass"  placeholder="Vnesi geslo" required="required" />
                                     <button>Show</button>
                                 </div>
                             </div>
                             <div class="btn-group">
-                                <button class="btn-login" id="signin-btn" >
-                                    Log In
-                                </button>
+
+                                    <input type="submit" class="btn-login" id="signin-btn" value="Prijava" />
+
                             </div>
+                            </form>
                             <div class="divine">
                                 <div></div>
                                 <div>OR</div>
@@ -80,6 +79,7 @@
                 </div>
             </div>
         </div>
+
         <div class="footer">
             <div class="links">
                 <a href="#">About</a>
