@@ -25,10 +25,12 @@ session_start();
             <div class="main-content">
                 <div class="form-container">
                     <div class="form-content box">
+                      <a href="index.php">
                         <div class="logo">
                             <img src="assets/icons/logo-fav.png" alt="Instagram logo" class="logo-light">
                             <img src="assets/icons/logo-fav.png" alt="Instagram logo" class="logo-dark">
                         </div>
+                        </a>
                         <form  action="functions/login_check.php" method="post">
                         <div class="signin-form" id="signin-form">
                             <div class="form-group">

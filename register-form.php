@@ -25,11 +25,13 @@ session_start();
             <div class="main-content">
                 <div class="form-container">
                     <div class="form-content box">
+                      <a href="index.php">
                         <div class="logo">
                             <img src="assets/icons/logo-fav.png" alt="Instagram logo" class="logo-light">
                             <img src="assets/icons/logo-fav.png" alt="Instagram logo" class="logo-dark">
                         </div>
-                        <form  action="functions/registration_check.php" method="post">
+                        </a>
+                        <form  action="functions/registration-check.php" method="post">
                         <div class="signin-form" id="signin-form">
                             <div class="form-group">
                                 <div class="animate-input">
@@ -66,11 +68,6 @@ session_start();
                             <div class="form-group">
                                 <div class="animate-input">
                                   <input type="password" name="pass"  placeholder="Password" required/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="animate-input">
-                                  <input type="password" name="pass_confirm"  placeholder="Confirm Password" required/>
                                 </div>
                             </div>
 
