@@ -1,10 +1,13 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed'); //prevent direct script access
 
 $host = 'localhost';
 $db   = 'addme';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';
+
+
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
