@@ -204,7 +204,25 @@ body {
     position: relative;
     top: 0.45em;
 }
+.divine-reg{
+  padding: 5px 90px 0px;
+  display: flex;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 15px;
+  margin: 0 18px;
+  color: var(--txt-second-color);
+}
+.divine-reg-1{
+  flex-grow: 1;
+  height: 1px;
 
+  position: relative;
+  top: 0.45em;
+}
+#odmik{
+  margin-top: 25px;
+}
 .btn-fb {
     border: 0;
     outline: 0;

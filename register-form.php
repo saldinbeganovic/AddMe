@@ -29,23 +29,54 @@ session_start();
                             <img src="assets/icons/logo-fav.png" alt="Instagram logo" class="logo-light">
                             <img src="assets/icons/logo-fav.png" alt="Instagram logo" class="logo-dark">
                         </div>
-                        <form  action="functions/login_check.php" method="post">
+                        <form  action="functions/registration_check.php" method="post">
                         <div class="signin-form" id="signin-form">
                             <div class="form-group">
                                 <div class="animate-input">
-                                  <input type="text" name="uname"  placeholder="Vnesi username" required="required" />
+                                  <input type="email" name="email"  placeholder="Email"/>
+                                </div>
+                                <div class="divine-reg">
+                                    <div>OR</div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="animate-input">
-                                    <input type="password" name="pass"  placeholder="Vnesi geslo" required="required" />
-                                    <button>Show</button>
+                                    <input type="text" name="telefon" placeholder="Telephone" autocomplete="off" maxlength="9"/>
+                                    <div class="divine-reg-1">
+                                        <div> </div>
+                                    </div>
+
                                 </div>
                             </div>
+                            <div class="form-group" id="odmik">
+                                <div class="animate-input">
+                                  <input type="text" name="name"  placeholder="Name" required/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="animate-input">
+                                  <input type="text" name="surname"  placeholder="Surname" required/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="animate-input">
+                                  <input type="text" name="uname"  placeholder="Username" required/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="animate-input">
+                                  <input type="password" name="pass"  placeholder="Password" required/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="animate-input">
+                                  <input type="password" name="pass_confirm"  placeholder="Confirm Password" required/>
+                                </div>
+                            </div>
+
+
                             <div class="btn-group">
-
-                                    <input type="submit" class="btn-login" id="signin-btn" value="Prijava" />
-
+                                    <input type="submit" class="btn-login" id="signin-btn" value="Register" />
                             </div>
                             </form>
                             <div class="divine">
@@ -70,8 +101,8 @@ session_start();
                     </div>
                     <div class="box goto">
                         <p>
-                            Don't have an account?
-                            <a href="register-form.php">Sign up</a>
+                            Have an account?
+                            <a href="login-form.php">Log in</a>
                         </p>
                     </div>
 
