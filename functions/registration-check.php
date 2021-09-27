@@ -1,58 +1,106 @@
 <?php
-define('BASEPATH', true); //access connection script if you omit this line file will be blank
-require 'database.php'; //require connection script
+require 'database.php';
+include_once 'session.php';
 
- if(isset($_POST['submit'])){
-        try {
-            $dsn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
-            $dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-         $ime = $_POST['name'];
-         $priimek = $_POST['surname'];
-         $telefon = $_POST['telefon'];
-         $user = $_POST['uname'];
-         $email = $_POST['email'];
-         $pass = $_POST['pass'];
+$username = $_POST['uname'];
+$email = $_POST['email'];
+$ime = $_POST['name'];
+$tel = $_POST['telefon'];
+$priimek = $_POST['surname'];
+$pass = $_POST['pass'];
+$path="assets/default-user.png";
+$use = 1;
+$dt=date('Y-m-d h:i:s');
 
-         $pass = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
 
-         //Check if username exists
-         $sql = "SELECT COUNT(username) AS num FROM uporabniki WHERE username =:username";
-         $stmt = $pdo->prepare($sql);
 
-         $stmt->bindValue(':username', $user);
-         $stmt->execute();
-         $row = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!empty($username) && !empty($pass) && !empty($ime)  && !empty($priimek))
+{
+    if (strlen($ime) <= 2) {
+      header("Location: ../register-form.php?error=Your Name cannot be less then 2 character&un=$username&sn=$priimek&tl=$tel&em=$email");
+       exit();
+    }
+    if (strlen($priimek) <= 2) {
+      header("Location: ../register-form.php?error=Your Surname cannot be less then 2 character&un=$username&na=$ime&tl=$tel&em=$email");
+       exit();
+    }
+    if (strlen($username) < 3) {
+        header("Location: ../register-form.php?error=Your Username cannot be less then 3 characters&na=$ime&sn=$priimek&tl=$tel&em=$email");
+        exit();
+    }
+    if (strlen($username) > 15) {
+        header("Location: ../register-form.php?error=Your Username cannot be bigger then 20 characters&na=$ime&sn=$priimek&tl=$tel&em=$email");
+        exit();
+    }
+    if (!empty($email)) {
+     //$pass = sha1($pass.$salt);
+     $query = "SELECT id FROM uporabniki WHERE email=?";
+     $stmt = $pdo->prepare($query);
+     $stmt->execute([$email]);
 
-         if($row['num'] > 0){
-             echo '<script>alert("Username already exists")</script>';
-        }
-
-       else{
-
-    $stmt = $dsn->prepare("INSERT INTO uporabniki (ime, priimek, username, password, email, telefonska)
-    VALUES (:ime, :priimek, :username, :password, :email, :telefonska)");
-    $stmt->bindParam(':username', $user);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':password', $pass);
-    $stmt->bindParam(':ime', $ime);
-    $stmt->bindParam(':priimek', $priimek);
-    $stmt->bindParam(':telefonska', $telefon);
-
-   if($stmt->execute()){
-    echo '<script>alert("New account created.")</script>';
-    //redirect to another page
-    echo '<script>window.location.replace("index.php")</script>';
-
-   }else{
-       echo '<script>alert("An error occurred")</script>';
-   }
-}
-}catch(PDOException $e){
-    $error = "Error: " . $e->getMessage();
-    echo '<script type="text/javascript">alert("'.$error.'");</script>';
-    header("Location: ../login-form.php");
-}
+     if ($stmt->rowCount() > 0 ) {
+       header("Location: ../register-form.php?error=Sorry that Email is already is taken&un=$username&na=$ime&sn=$priimek&tl=$tel");
+       exit();
      }
 
+    }
+
+    if (!empty($username)) {
+     //$pass = sha1($pass.$salt);
+     $query = "SELECT id FROM uporabniki WHERE username=?";
+     $stmt = $pdo->prepare($query);
+     $stmt->execute([$username]);
+
+     if ($stmt->rowCount() > 0 ) {
+       header("Location: ../register-form.php?error=Sorry that Username is already is taken&na=$ime&sn=$priimek&tl=$tel&em=$email");
+       exit();
+     }
+
+    }
+    if (!empty($tel)) {
+     //$pass = sha1($pass.$salt);
+     $query = "SELECT id FROM uporabniki WHERE telefonska=?";
+     $stmt = $pdo->prepare($query);
+     $stmt->execute([$tel]);
+
+     if ($stmt->rowCount() > 0 ) {
+       header("Location: ../register-form.php?error=Sorry that Telephone number is already is taken&un=$username&na=$ime&sn=$priimek&em=$email");
+       exit();
+     }
+
+    }
+    if (strlen($pass) < 8) {
+        header("Location: ../register-form.php?error=Your Password cannot be less then 8 characters&un=$username&na=$ime&sn=$priimek&tl=$tel&em=$email");
+        exit();
+    }
+    $stmt = $pdo->query('SELECT email FROM uporabniki');
+
+    while ($row = $stmt->fetch()) {
+        if ($email != $row['email']) {
+            $use = 0;
+          }else{
+            $use = 1;
+          }
+    }
+
+      //preverim podatke, da so obvezi vnešeni
+      if (($use == 0)) {
+          //$pass = sha1($pass1.$salt);
+          $pass = password_hash($pass, PASSWORD_DEFAULT);
+
+          $query = 'INSERT INTO uporabniki (username,email,password,ime,priimek,telefonska,datum_reg,slika_profila) VALUES (?,?,?,?,?,?,?,?)';
+          $pdo->prepare($query)->execute([$username, $email, $pass, $ime, $priimek, $tel, $dt, $path]);
+
+
+          echo "kul";
+      header("Location: ../login-form.php");
+      }
+
+
+}else{
+  header("Location: ../register-form.php?error=Pleae enter your data");
+  exit();
+
+}
 ?>

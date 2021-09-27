@@ -1,5 +1,8 @@
 <?php
 include('main_php/header.php');
+
+
+
 ?>
 
 
@@ -375,16 +378,87 @@ include('main_php/header.php');
 
             <section class="side-menu">
                 <div class="side-menu__user-profile">
-                    <a href="#" target="_blank" class="side-menu__user-avatar">
+                    <a href="profile.php" target="_blank" class="side-menu__user-avatar">
                         <img src="assets/default-user.png" alt="User Picture">
                     </a>
                     <div class="side-menu__user-info">
-                        <a href="#" target="_blank">username</a>
-                        <span>Saldin Beganović</span>
+                      <?php
+                      if(isset($_SESSION['username'])){
+                        ?>
+                        <a href="#" target="_blank"><?php echo $_SESSION['username']; ?></a>
+                        <span><?php echo $_SESSION['ime'];echo " ";echo $_SESSION['priimek']; ?></span>
+                        <?php
+                      }
+                        else{
+                          ?>
+                          <a href="#" target="_blank">Log in</a>
+                          <?php
+                        }
+                       ?>
+
+
                     </div>
-                    <button class="side-menu__user-button">Switch</button>
+                    <a href="functions/logout.php" class="side-menu__user-button">Switch</a>
                 </div>
 
+                <div class="side-menu__suggestions-section">
+                    <div class="side-menu__suggestions-header">
+                        <h2>Active Friends</h2>
+                        <button>See All</button>
+                    </div>
+                    <div class="side-menu__suggestions-content-active">
+                        <div class="side-menu__suggestion">
+                            <a href="#" class="side-menu__suggestion-avatar">
+                                <img src="assets/default-user.png" alt="User Picture">
+                            </a>
+                            <div class="side-menu__suggestion-info">
+                                <a href="#">usernick16 <img id="active" src="assets/icons/active.png" alt="active_image"></a>
+                                <span>Followed by user1, user2 and 9 others</span>
+                            </div>
+                            <button class="side-menu__suggestion-button">Follow</button>
+                        </div>
+                        <div class="side-menu__suggestion">
+                            <a href="#" class="side-menu__suggestion-avatar">
+                                <img src="assets/default-user.png" alt="User Picture">
+                            </a>
+                            <div class="side-menu__suggestion-info">
+                                <a href="#">usernick17 <img id="active" src="assets/icons/active.png" alt="active_image"></a>
+                                <span>Followed by user1, user2 and 3 others</span>
+                            </div>
+                            <button class="side-menu__suggestion-button">Follow</button>
+                        </div>
+                        <div class="side-menu__suggestion">
+                            <a href="#" class="side-menu__suggestion-avatar">
+                                <img src="assets/default-user.png" alt="User Picture">
+                            </a>
+                            <div class="side-menu__suggestion-info">
+                                <a href="#">usernick18 <img id="active" src="assets/icons/active.png" alt="active_image"></a>
+                                <span>Followed by user1 and 9 others</span>
+                            </div>
+                            <button class="side-menu__suggestion-button">Follow</button>
+                        </div>
+                        <div class="side-menu__suggestion">
+                            <a href="#" class="side-menu__suggestion-avatar">
+                                <img src="assets/default-user.png" alt="User Picture">
+                            </a>
+                            <div class="side-menu__suggestion-info">
+                                <a href="#">usernick19 <img id="active" src="assets/icons/active.png" alt="active_image"></a>
+                                <span>Followed by user1 and 3 others</span>
+                            </div>
+                            <button class="side-menu__suggestion-button">Follow</button>
+                        </div>
+                        <div class="side-menu__suggestion">
+                            <a href="#" class="side-menu__suggestion-avatar">
+                                <img src="assets/default-user.png" alt="User Picture">
+                            </a>
+                            <div class="side-menu__suggestion-info">
+                                <a href="#">usernick20 <img id="active" src="assets/icons/active.png" alt="active_image"></a>
+                                <span>Followed by user1 and 6 others</span>
+                            </div>
+                            <button class="side-menu__suggestion-button">Follow</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="side-menu__suggestions-section">
                     <div class="side-menu__suggestions-header">
                         <h2>Suggestions for You</h2>
@@ -443,7 +517,6 @@ include('main_php/header.php');
                         </div>
                     </div>
                 </div>
-
                 <div class="side-menu__footer">
                     <div class="side-menu__footer-links">
                         <ul class="side-menu__footer-list">
@@ -489,7 +562,8 @@ include('main_php/header.php');
         </section>
     </main>
 
-  
+
     <?php
+
     include('main_php/footer.php');
     ?>

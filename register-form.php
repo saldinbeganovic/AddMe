@@ -1,5 +1,5 @@
 <?php
-session_start();
+include_once 'functions/session.php';
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,8 +34,17 @@ session_start();
                         <form  action="functions/registration-check.php" method="post">
                         <div class="signin-form" id="signin-form">
                             <div class="form-group">
+                              <div >
+                                <?php if (isset($_GET['error'])) { ?>
+                                   <p class="error-r"><?php echo $_GET['error']; ?></p>
+                                 <?php } ?>
+                              </div>
                                 <div class="animate-input">
-                                  <input type="email" name="email"  placeholder="Email"/>
+                                  <?php if (isset($_GET['em'])) { ?>
+                                    <input type="email" name="email"  placeholder="Email" autocomplete="off" value="<?php echo $_GET['em'] ?>"/>
+                                  <?php }else{ ?>
+                                  <input type="email" name="email"  placeholder="Email" autocomplete="off"/>
+                                  <?php } ?>
                                 </div>
                                 <div class="divine-reg">
                                     <div>OR</div>
@@ -43,7 +52,11 @@ session_start();
                             </div>
                             <div class="form-group">
                                 <div class="animate-input">
+                                    <?php if (isset($_GET['tl'])) { ?>
+                                      <input type="text" name="telefon" placeholder="Telephone" autocomplete="off" maxlength="9" value="<?php echo $_GET['tl'] ?>"/>
+                                    <?php }else{ ?>
                                     <input type="text" name="telefon" placeholder="Telephone" autocomplete="off" maxlength="9"/>
+                                    <?php } ?>
                                     <div class="divine-reg-1">
                                         <div> </div>
                                     </div>
@@ -52,22 +65,34 @@ session_start();
                             </div>
                             <div class="form-group" id="odmik">
                                 <div class="animate-input">
-                                  <input type="text" name="name"  placeholder="Name" required/>
+                                  <?php if (isset($_GET['na'])) { ?>
+                                    <input type="text" name="name"  placeholder="Name" required autocomplete="off" value="<?php echo $_GET['na'] ?>"/>
+                                  <?php }else{ ?>
+                                  <input type="text" name="name"  placeholder="Name" required autocomplete="off"/>
+                                  <?php } ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="animate-input">
-                                  <input type="text" name="surname"  placeholder="Surname" required/>
+                                  <?php if (isset($_GET['sn'])) { ?>
+                                    <input type="text" name="surname"  placeholder="Surname" required autocomplete="off" value="<?php echo $_GET['sn'] ?>"/>
+                                  <?php }else{ ?>
+                                <input type="text" name="surname"  placeholder="Surname" required autocomplete="off"/>
+                                  <?php } ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="animate-input">
-                                  <input type="text" name="uname"  placeholder="Username" required/>
+                                  <?php if (isset($_GET['un'])) { ?>
+                                    <input type="text" name="uname"  placeholder="Username" required="required" autocomplete="off" value="<?php echo $_GET['un'] ?>"/>
+                                  <?php }else{ ?>
+                                  <input type="text" name="uname"  placeholder="Username" required="required" autocomplete="off"/>
+                                  <?php } ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="animate-input">
-                                  <input type="password" name="pass"  placeholder="Password" required/>
+                                  <input type="password" name="pass"  placeholder="Password" required autocomplete="off"/>
                                 </div>
                             </div>
 
@@ -82,18 +107,18 @@ session_start();
                                 <div></div>
                             </div>
                             <div class="btn-group">
-                                <button class="btn-fb">
+                                <a href="" class="btn-fb">
                                     <img src="assets/icons/facebook-icon.png" alt="">
                                     <span>Log in with Facebook</span>
-                                </button>
+                                </a>
                             </div>
                             <div class="btn-group">
-                                <button class="btn-gl">
+                                <a href="" class="btn-gl">
                                     <img src="assets/icons/google_search_new_logo_icon_159150.png" alt="">
                                     <span>Log in with Google</span>
-                                </button>
+                                </a>
                             </div>
-                            <a href="#" class="forgot-pw">Forgot password?</a>
+                            <a href="passreset-form.php" class="forgot-pw">Forgot password?</a>
                         </div>
                     </div>
                     <div class="box goto">

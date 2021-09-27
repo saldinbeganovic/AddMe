@@ -595,7 +595,7 @@ img { max-width: 100%; }
     background-color: transparent;
     border: none;
     cursor: pointer;
-
+    text-decoration: none;
     font-size: 12px;
     font-weight: 500;
     color: var(--link);
@@ -625,7 +625,15 @@ img { max-width: 100%; }
     font-weight: 500;
     color: var(--text-dark);
 }
+.side-menu__suggestions-content-active{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
+  margin: 16px 0 24px;
+  padding-left: 4px;
+  margin-bottom: 50px;
+}
 .side-menu__suggestions-content {
     display: flex;
     flex-direction: column;
@@ -853,4 +861,24 @@ img { max-width: 100%; }
     .side-menu {
         display: flex;
     }
+}
+a{
+  text-decoration: none;
+}
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
+#active{
+  height: 10px;
+  padding-bottom: 3px;
 }

@@ -41,15 +41,15 @@ session_start();
                             <div class="form-group">
                                 <div class="animate-input">
                                   <?php if (isset($_GET['un'])) { ?>
-                                    <input type="text" name="uname"  placeholder="Username" required="required" autocomplete="off" value="<?php echo $_GET['un'] ?>"/>
+                                    <input type="text" name="uname"  placeholder="Vnesi username" required="required" autocomplete="off" value="<?php echo $_GET['un'] ?>"/>
                                   <?php }else{ ?>
-                                  <input type="text" name="uname"  placeholder="Username" required="required" autocomplete="off"/>
+                                  <input type="text" name="uname"  placeholder="Vnesi username" required="required" autocomplete="off"/>
                                   <?php } ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="animate-input">
-                                    <input type="password" name="pass"  placeholder="Password" required="required" autocomplete="off"/>
+                                    <input type="password" name="pass"  placeholder="Vnesi geslo" required="required" autocomplete="off"/>
                                     <button>Show</button>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@ session_start();
                                     <span>Log in with Google</span>
                                 </a>
                             </div>
-                            <a href="passreset-form.php" class="forgot-pw">Forgot password?</a>
+                            <a href="#" class="forgot-pw">Forgot password?</a>
                         </div>
                     </div>
                     <div class="box goto">
