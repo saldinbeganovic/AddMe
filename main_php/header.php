@@ -1,9 +1,11 @@
 <?php
 include_once 'functions/session.php';
+include "functions/function.php";
 if(!isset($_SESSION['user_id'])){ //if login in session is not set
     header("Location: login-form.php");
 }
- ?>
+ $user=get_user(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +20,7 @@ if(!isset($_SESSION['user_id'])){ //if login in session is not set
     <!-- GOOGLE FONT -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-
+    
 
 </head>
 
@@ -62,7 +64,7 @@ if(!isset($_SESSION['user_id'])){ //if login in session is not set
                       <path d="M2.45307 11.751L11.9773 2.02175L21.5015 11.751C21.7906 12.0463 21.9545 12.4468 21.9545 12.8711V20.4556C21.9545 20.7747 21.7037 21 21.4427 21H15.964C15.713 21 15.4721 20.7849 15.4721 20.476V15.8886C15.4721 13.9497 13.9267 12.34 11.9773 12.34C10.0279 12.34 8.48244 13.9497 8.48244 15.8886V20.476C8.48244 20.7849 8.24157 21 7.99053 21H2.51187C2.25085 21 2 20.7747 2 20.4556V12.8711C2 12.4468 2.16397 12.0463 2.45307 11.751Z" stroke="var(--text-dark)" stroke-width="2"/>
                   </svg>
               </a>
-              <a href="#">
+              <a href="create_post.php">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <rect x="3" y="3" width="18" height="18" rx="5" stroke="var(--text-dark)" stroke-width="1.8"/>
                       <line x1="12.1" y1="6.9" x2="12.1" y2="17.1" stroke="var(--text-dark)" stroke-width="1.8" stroke-linecap="round"/>
@@ -87,7 +89,7 @@ if(!isset($_SESSION['user_id'])){ //if login in session is not set
               <button class="profile-button">
                   <div class="profile-button__border"></div>
                   <div class="profile-button__picture">
-                      <img src="assets/default-user.png" alt="User Picture">
+                      <img src="<?php if (isset($user['slika_profila'])) {	echo  $user['slika_profila'] ;  } else {echo "assets/default-user.png";} ?>" alt="User Picture">
                   </div>
               </button>
               </a>

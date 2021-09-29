@@ -51,7 +51,7 @@ img { max-width: 100%; }
 
 /* -------------------------------------------------- */
 
-/* Header Navbar */
+/* Header.navbar-nav-addme */
 .header {
     width: 100%;
     height: var(--header-height);
@@ -151,8 +151,9 @@ img { max-width: 100%; }
 }
 
 
-/* Bottom Navbar */
-.navbar {
+
+/* Bottom.navbar-nav-addme */
+.navbar-nav-addme {
     width: 100%;
     height: var(--nav-height);
     background-color: var(--primary);
@@ -162,7 +163,7 @@ img { max-width: 100%; }
     bottom: 0; left: 0;
     z-index: 2;
 }
-.navbar::after {
+.navbar-nav-addme::after {
     content: '';
     position: absolute;
     top: 0;
@@ -172,14 +173,14 @@ img { max-width: 100%; }
     background-color: var(--border);
 }
 
-.navbar__button {
+.navbar-nav-addme__button {
     flex: 1 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.navbar__button.profile-button .profile-button__border {
+.navbar-nav-addme__button.profile-button .profile-button__border {
     width: 28px;
     height: 28px;
     border-width: 2px;
@@ -540,7 +541,8 @@ img { max-width: 100%; }
     display: flex;
     align-items: center;
 
-    margin: 20px 0 22px;
+    margin: 10px 0 22px;
+    margin-bottom: 10px;
 }
 .side-menu__user-avatar {
     width: 56px;
@@ -632,7 +634,8 @@ img { max-width: 100%; }
 
   margin: 16px 0 24px;
   padding-left: 4px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 .side-menu__suggestions-content {
     display: flex;
@@ -767,7 +770,7 @@ img { max-width: 100%; }
     width: 24px;
     height: 24px;
     border-radius: 50%;
-
+    display: block;
     overflow: hidden;
     position: relative;
 }
@@ -776,7 +779,7 @@ img { max-width: 100%; }
     position: absolute;
     top: 0; bottom: 0;
     left: 0; right: 0;
-
+      object-fit: cover;
     border: 1px solid var(--img-border);
     border-radius: 50%;
 }
@@ -844,7 +847,7 @@ img { max-width: 100%; }
         display: none;
     }
 
-    .navbar {
+    .navbar-nav-addme {
         display: none;
     }
 }
@@ -874,9 +877,7 @@ html {
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
 /* Optional: show position indicator in red */
-::-webkit-scrollbar-thumb {
-    background: #FF0000;
-}
+
 
 #active{
   height: 10px;

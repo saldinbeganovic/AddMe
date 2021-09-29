@@ -1,5 +1,6 @@
 
 <?php include 'main_php/header.php'; ?>
+
     <link rel="stylesheet" type="text/css" href="css/profile.css">
     <header>
 
@@ -9,20 +10,20 @@
 
     			<div class="profile-image">
 
-    				<img src="assets/default-user.png" alt="">
+    				<img id="cover" src=" <?php if (isset($user['slika_profila'])) {	echo  $user['slika_profila'] ;  } else {echo "assets/default-user.png";} ?>  " alt="">
 
     			</div>
 
     			<div class="profile-user-settings">
             <?php
-            if(isset($_SESSION['username'])){
+            if(isset($user['username'])){
               ?>
-              <h1 class="profile-user-name" id="text-dark"><?php echo $_SESSION['username']; ?></h1>
+              <h1 class="profile-user-name" id="text-dark"><?php echo $user['username']; ?></h1>
     			 <?php } ?>
 
-    				<button class="btn profile-edit-btn">Edit Profile</button>
+    				<a href="edit-profile.php" class="btn profile-edit-btn">Edit Profile</a>
 
-    				<button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
+
 
     			</div>
 
@@ -38,10 +39,10 @@
 
     			<div class="profile-bio">
             <?php
-            if(isset($_SESSION['username'])){
+            if(isset($user['username'])){
               ?>
-            <span class="profile-real-name" id="text-dark"><?php echo $_SESSION['ime'];echo " ";echo $_SESSION['priimek']; ?></span><?php } ?>
-    				<p >Lorem ipsum dolor sit, amet consectetur adipisicing elit 📷✈️🏕️</p>
+            <span class="profile-real-name" id="text-dark"><?php echo $user['ime'];echo " ";echo $user['priimek']; ?></span><?php } ?>
+    				<p ><?php  echo $user['opis_profila'];?></p>
 
     			</div>
 
@@ -59,20 +60,7 @@
 
     		<div class="gallery">
 
-    			<div class="gallery-item" tabindex="0">
-
-    				<img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 56</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
+    			<?php gallery(); ?>
 
     			<div class="gallery-item" tabindex="0">
 
@@ -157,6 +145,21 @@
     			</div>
 
     			<div class="gallery-item" tabindex="0">
+
+            <img src="assets/insta-clone.png" class="gallery-image" alt="">
+
+
+    				<div class="gallery-item-info">
+
+    					<ul>
+    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 94</li>
+    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 3</li>
+    					</ul>
+
+    				</div>
+
+    			</div>
+          <div class="gallery-item" tabindex="0">
 
             <img src="assets/insta-clone.png" class="gallery-image" alt="">
 

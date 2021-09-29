@@ -22,6 +22,8 @@ if (!empty($usern) && !empty($pass)) {
          $_SESSION['username'] = $user['username'];
          $_SESSION['ime'] = $user['ime'];
          $_SESSION['priimek'] = $user['priimek'];
+         $_SESSION['slika'] = $user['slika_profila'];
+         $_SESSION['email'] = $user['email'];
          //$_SESSION['admin'] = $user['admin'];
          header("Location: ../index.php");
          echo 'uspesna prijava';

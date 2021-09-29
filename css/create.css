@@ -1,0 +1,49 @@
+.post__content {
+    display: flex;
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+
+}
+.post__medias {
+    display: flex;
+
+
+    width: 100%;
+
+}
+.post__medias::-webkit-scrollbar {
+    display: none;
+}
+.post__media {
+    width: 100%;
+    flex: none;
+
+}
+.post__media {
+    width: 100%;
+    flex: none;
+
+}
+.odmik{
+  margin-top: 2rem;
+}
+.form-inline .col-md-10 .col-sm-9 .col-xs-12{
+  margin-left: 10px;
+}
+#odmik{
+    margin-left: 10px;
+}
+#vse{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.container-profile{
+  overflow: none;
+}
+body{
+    overflow: none;
+}
+.content-panel{
+  border: none;
+}

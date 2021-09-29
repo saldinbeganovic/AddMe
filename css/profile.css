@@ -43,7 +43,7 @@ img {
 }
 
 .btn:focus {
-    outline: 0.5rem auto #4d90fe;
+outline: 0.5rem auto #4d90fe;
 }
 
 .visually-hidden {
@@ -62,7 +62,7 @@ img {
 }
 
 .profile::after {
-    content: "";
+    
     display: block;
     clear: both;
 }
@@ -101,7 +101,7 @@ img {
 .profile-edit-btn {
     font-size: 1.4rem;
     line-height: 1.8;
-    border: 0.1rem solid #dbdbdb;
+
     border-radius: 0.3rem;
     padding: 0 2.4rem;
     margin-left: 2rem;
@@ -239,6 +239,7 @@ img {
 
     .profile-image img {
         width: 7.7rem;
+        object-fit: cover;
     }
 
     .profile-user-settings {
@@ -373,4 +374,7 @@ Remove or comment-out the code block below to see how the browser will fall-back
             margin: 0;
         }
     }
+}
+#cover{
+  object-fit: cover;
 }
