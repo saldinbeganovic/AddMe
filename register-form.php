@@ -19,7 +19,22 @@ include_once 'functions/session.php';
 </head>
 
 <body>
+  <link rel="stylesheet" href="css/loader.css">
+  <div class="loader-wrapper">
+  <div class="loader-img">
+  <img id="loader-img" src="assets/icons/favico.png" alt="">
+  </div>
 
+  </div>
+  <script type="text/javascript">
+  window.addEventListener("load", function () {
+      const loader = document.querySelector(".loader-wrapper");
+      loader.className += " hidden-loader"; // class "loader hidden"
+  });
+  </script>
+<?php
+
+ ?>
     <div class="container">
         <div class="main-container">
             <div class="main-content">
@@ -81,12 +96,12 @@ include_once 'functions/session.php';
                                   <?php } ?>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" >
                                 <div class="animate-input">
                                   <?php if (isset($_GET['un'])) { ?>
-                                    <input type="text" name="uname"  placeholder="Username" required="required" autocomplete="off" value="<?php echo $_GET['un'] ?>"/>
+                                    <input type="text" name="uname"  placeholder="Username" required="required" autocomplete="off" onkeyup="return forceLower(.this);" value="<?php echo $_GET['un'] ?>"/>
                                   <?php }else{ ?>
-                                  <input type="text" name="uname"  placeholder="Username" required="required" autocomplete="off"/>
+                                  <input type="text" name="uname"  placeholder="Username" required="required"  autocomplete="off"/>
                                   <?php } ?>
                                 </div>
                             </div>

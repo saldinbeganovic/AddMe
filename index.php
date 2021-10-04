@@ -4,6 +4,53 @@ include('main_php/header.php');
 
 
 ?>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="css/loader.css">
+
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+></script>
+<div class="post-menu-bg hidden-menu">
+<div class="post-menu scale-in-center">
+<button type="button" class="post-menu_button red" name="button">UNFOLLOW</button>
+<button type="button" class="post-menu_button red" name="button">DELETE</button>
+<button type="button" class="post-menu_button" name="button">GO TO POST</button>
+<button type="button" class="post-menu_button " onclick="closeDiv()" name="close">CANCEL</button>
+</div>
+</div>
+
+<script>
+function closeDiv() {
+  document.getElementById("post-menu-bg").classList.add("hidden-menu");
+  document.getElementById("post-menu").classList.remove("scale-in-center");
+
+
+
+  }
+</script>
+
+<script type="text/javascript">
+window.addEventListener("menu_post", function () {
+    const loader = document.querySelector(".post-menu-bg");
+    loader.className += " hidden-menu"; // class "loader hidden"
+});
+</script>
+
+<div class="loader-wrapper">
+<div class="loader-img">
+<img id="loader-img" src="assets/icons/favico.png" alt="">
+</div>
+
+</div>
+<script type="text/javascript">
+window.addEventListener("load", function () {
+    const loader = document.querySelector(".loader-wrapper");
+    loader.className += " hidden-loader"; // class "loader hidden"
+});
+</script>
 
 
     <main class="main-container">
@@ -19,7 +66,7 @@ include('main_php/header.php');
             <section class="side-menu">
                 <div class="side-menu__user-profile">
                     <a href="profile.php" class="side-menu__user-avatar">
-                        <img src="<?php if (isset($user['slika_profila'])) {	echo  $user['slika_profila'] ;  } else {echo "assets/default-user.png";} ?>" alt="User Picture">
+                        <img id="slika" src="<?php if (isset($user['slika_profila'])) {	echo  $user['slika_profila'] ;  } else {echo "assets/default-user.png";} ?>" alt="User Picture">
                     </a>
                     <div class="side-menu__user-info">
                       <?php
@@ -39,19 +86,30 @@ include('main_php/header.php');
 
                     </div>
                     <a href="functions/logout.php" class="side-menu__user-button">Switch</a>
-                </div>
+                </div><?php
+                $friends=noFriends();
+
+                 if($friends==1){
+                  ?>
+
+                  <div class="side-menu__suggestions-section">
+                      <div class="side-menu__suggestions-header">
+                          <h2>Active Friends</h2>
+                          <button>See All</button>
+                      </div>
+                      <div class="side-menu__suggestions-content-active">
+                          <?php activeFriends(); ?>
+
+                      </div>
+                  </div>
+
+                  <?php
+                }else {
+                  echo "";
+
+                } ?>
 
 
-                <div class="side-menu__suggestions-section">
-                    <div class="side-menu__suggestions-header">
-                        <h2>Active Friends</h2>
-                        <button>See All</button>
-                    </div>
-                    <div class="side-menu__suggestions-content-active">
-                        <?php activeFriends(); ?>
-
-                    </div>
-                </div>
                 <div class="side-menu__suggestions-section">
                     <div class="side-menu__suggestions-header">
                         <h2>Suggestions for You</h2>

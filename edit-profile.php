@@ -5,6 +5,20 @@
 	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="css/edit.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.min.css">
+<link rel="stylesheet" href="css/loader.css">
+<div class="loader-wrapper">
+<div class="loader-img">
+<img id="loader-img" src="assets/icons/favico.png" alt="">
+</div>
+
+</div>
+<script type="text/javascript">
+window.addEventListener("load", function () {
+    const loader = document.querySelector(".loader-wrapper");
+    loader.className += " hidden-loader"; // class "loader hidden"
+});
+</script>
 
 <div class="container-profile">
     <div class="view-account">
@@ -56,20 +70,20 @@
                             <div class="form-group">
                                 <label class="col-md-2 col-sm-3 col-xs-12 control-label">User Name</label>
                                 <div class="col-md-10 col-sm-9 col-xs-12">
-                                    <input type="text" class="form-control" value="<?php echo $user['username'] ?>">
+                                    <input type="text" name="uime" class="form-control" value="<?php echo $user['username'] ?>">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-2 col-sm-3 col-xs-12 control-label">First Name</label>
                                 <div class="col-md-10 col-sm-9 col-xs-12">
-                                    <input type="text" class="form-control" value="<?php echo $user['ime'] ?>">
+                                    <input type="text" name="ime" class="form-control" value="<?php echo $user['ime'] ?>">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-2 col-sm-3 col-xs-12 control-label">Last Name</label>
                                 <div class="col-md-10 col-sm-9 col-xs-12">
-                                    <input type="text" class="form-control" value="<?php echo $user['priimek'] ?>">
+                                    <input name="priimek" type="text" class="form-control" value="<?php echo $user['priimek'] ?>">
                                 </div>
                             </div>
                         </fieldset>
@@ -78,23 +92,35 @@
                             <div class="form-group">
                                 <label class="col-md-2  col-sm-3 col-xs-12 control-label">Email</label>
                                 <div class="col-md-10 col-sm-9 col-xs-12">
-                                    <input type="email" class="form-control" value="<?php echo $user['email'] ?>">
+                                    <input name="email" type="email" class="form-control" value="<?php echo $user['email'] ?>">
                                     <p class="help-block">This is the email </p>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-2  col-sm-3 col-xs-12 control-label">Bio</label>
                                 <div class="col-md-10 col-sm-9 col-xs-12">
-                                    <textarea class="form-control" name="bio"><?php echo $user['opis_profila']; ?>
 
-																			</textarea>
+
+                                    <textarea id="textarea" class="form-control" name="bio"><?php echo $user['opis_profila']; ?></textarea>
+																			<script
+																			src="https://code.jquery.com/jquery-3.6.0.min.js"
+																			></script>
+																			<script src="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.min.js">
+																			</script>
+																			<script>
+ 																				$(document).ready(function(){
+																					$("#textarea").emojioneArea({
+																						pickerPosition:"bottom"
+																					});
+																				});
+																			</script>
                                     <p class="help-block">Your profile description</p>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-2  col-sm-3 col-xs-12 control-label">Number</label>
                                 <div class="col-md-10 col-sm-9 col-xs-12">
-                                    <input type="url" class="form-control" value="<?php echo $user['telefonska'] ?>">
+                                    <input type="tel" name="tel" class="form-control" value="<?php echo $user['telefonska'] ?>">
                                     <p class="help-block">This is the telephone number</p>
                                 </div>
                             </div>

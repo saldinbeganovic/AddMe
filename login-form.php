@@ -1,5 +1,10 @@
 <?php
 session_start();
+//googleAPi
+require_once('glogin/loging.php');
+
+
+
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +24,19 @@ session_start();
 </head>
 
 <body>
+  <link rel="stylesheet" href="css/loader.css">
+  <div class="loader-wrapper">
+  <div class="loader-img">
+  <img id="loader-img" src="assets/icons/favico.png" alt="">
+  </div>
+
+  </div>
+  <script type="text/javascript">
+  window.addEventListener("load", function () {
+      const loader = document.querySelector(".loader-wrapper");
+      loader.className += " hidden-loader"; // class "loader hidden"
+  });
+  </script>
 
     <div class="container">
         <div class="main-container">
@@ -72,10 +90,12 @@ session_start();
                                 </a>
                             </div>
                             <div class="btn-group">
-                                <a href=""class="btn-gl">
-                                    <img src="assets/icons/google_search_new_logo_icon_159150.png" alt="">
-                                    <span>Log in with Google</span>
-                                </a>
+                            <a href="'.$client->createAuthUrl().'"class="btn-gl">
+                                      <img src="assets/icons/google_search_new_logo_icon_159150.png" alt="">
+                                      <span>Log in with Google</span>
+                                      </a>
+
+
                             </div>
                             <a href="passreset-form.php" class="forgot-pw">Forgot password?</a>
                         </div>

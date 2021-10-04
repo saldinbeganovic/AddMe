@@ -1,8 +1,33 @@
 
 <?php include 'main_php/header.php'; ?>
 
+
+<?php
+      if (isset($_GET['p'])) {
+        $uname=$_GET['p'];
+      }else {
+        $uname=$user['username'];
+      }
+
+      $user_profile=get_userProfile($uname);
+      $uid=$user_profile['id'];
+ ?>
+
     <link rel="stylesheet" type="text/css" href="css/profile.css">
     <header>
+      <link rel="stylesheet" href="css/loader.css">
+      <div class="loader-wrapper">
+      <div class="loader-img">
+      <img id="loader-img" src="assets/icons/favico.png" alt="">
+      </div>
+
+      </div>
+      <script type="text/javascript">
+      window.addEventListener("load", function () {
+          const loader = document.querySelector(".loader-wrapper");
+          loader.className += " hidden-loader"; // class "loader hidden"
+      });
+      </script>
 
     	<div class="container">
 
@@ -10,39 +35,68 @@
 
     			<div class="profile-image">
 
-    				<img id="cover" src=" <?php if (isset($user['slika_profila'])) {	echo  $user['slika_profila'] ;  } else {echo "assets/default-user.png";} ?>  " alt="">
+    				<img id="cover" src=" <?php if (isset($user_profile['slika_profila'])) {	echo  $user_profile['slika_profila'] ;  } else {echo "assets/default-user.png";} ?>  " alt="">
 
     			</div>
 
     			<div class="profile-user-settings">
-            <?php
-            if(isset($user['username'])){
-              ?>
-              <h1 class="profile-user-name" id="text-dark"><?php echo $user['username']; ?></h1>
-    			 <?php } ?>
 
-    				<a href="edit-profile.php" class="btn profile-edit-btn">Edit Profile</a>
+
+
+            <?php
+            if(isset($user_profile['username'])){
+              ?>
+              <h1 class="profile-user-name float" id="text-dark"><?php echo $user_profile['username']; ?></h1>
+    			 <?php } ?>
+           <?php if ($uid==$user['id']) {
+             ?><a href="edit-profile.php"  class="btn profile-edit-btn float margin">Edit Profile</a><?php
+           } else{
+             ?>
+             <a href="messages.php"  class="btn profile-edit-btn float margin">Message</a>
+             <?php if (isFollowing($uname)){
+                    ?>
+                    <form class="float margin" id="max" action="functions/function.php" method="post">
+                      <input type="hidden" name="following_id" value="<?php echo $uid; ?>">
+                      <input type="hidden" name="profil" value="<?php echo $uname; ?>">
+                      <button class="btn profile-edit-btn" type="submit" name="unfollow">Unfollow</button>
+                    </form>
+                    <?php
+                  }else {
+                    ?>
+                    <form class="float margin" id="max" action="functions/function.php" method="post">
+                      <input type="hidden" name="following_id" value="<?php echo $uid; ?>">
+                      <input type="hidden" name="profil" value="<?php echo $uname; ?>">
+                      <button class="btn profile-edit-btn" type="submit" name="follow">Follow</button>
+                    </form>
+                    <?php
+                  }
+           }?>
+
 
 
 
     			</div>
 
     			<div class="profile-stats">
-
+            <?php
+            $posts=posts($uid);
+            $followers=followers($uid);
+            $following=following($uid);
+            ?>
     				<ul>
-    					<li><span class="profile-stat-count" id="text-dark">164</span> posts</li>
-    					<li><span class="profile-stat-count" id="text-dark">188</span> followers</li>
-    					<li><span class="profile-stat-count" id="text-dark">206</span> following</li>
+    					<li><span class="profile-stat-count" id="text-dark"><?php echo $posts; ?></span> posts</li>
+    					<li><span class="profile-stat-count" id="text-dark"><?php echo $followers ?></span> followers</li>
+    					<li><span class="profile-stat-count" id="text-dark"><?php echo $following ?></span> following</li>
     				</ul>
 
     			</div>
 
     			<div class="profile-bio">
             <?php
-            if(isset($user['username'])){
+            if(isset($user_profile['username'])){
               ?>
-            <span class="profile-real-name" id="text-dark"><?php echo $user['ime'];echo " ";echo $user['priimek']; ?></span><?php } ?>
-    				<p ><?php  echo $user['opis_profila'];?></p>
+            <span class="profile-real-name" id="text-dark"><?php echo $user_profile['ime'];echo " ";echo $user_profile['priimek']; ?></span><?php } ?>
+    				<p ><?php  echo $user_profile['opis_profila'];?></p>
 
     			</div>
 
@@ -60,234 +114,8 @@
 
     		<div class="gallery">
 
-    			<?php gallery(); ?>
+    			<?php gallery($uid); ?>
 
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-type">
-
-    					<span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>
-
-    				</div>
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 42</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 1</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-type">
-
-    					<span class="visually-hidden">Video</span><i class="fas fa-video" aria-hidden="true"></i>
-
-    				</div>
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 38</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-type">
-
-    					<span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>
-
-    				</div>
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 47</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 1</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 94</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 3</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-          <div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 94</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 3</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-type">
-
-    					<span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>
-
-    				</div>
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 52</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 4</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 66</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-type">
-
-    					<span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>
-
-    				</div>
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 45</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 34</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 1</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 41</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
-
-    			<div class="gallery-item" tabindex="0">
-
-            <img src="assets/insta-clone.png" class="gallery-image" alt="">
-
-
-    				<div class="gallery-item-type">
-
-    					<span class="visually-hidden">Video</span><i class="fas fa-video" aria-hidden="true"></i>
-
-    				</div>
-
-    				<div class="gallery-item-info">
-
-    					<ul>
-    						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 30</li>
-    						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
-    					</ul>
-
-    				</div>
-
-    			</div>
 
     		</div>
     		<!-- End of gallery -->

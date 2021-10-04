@@ -19,7 +19,19 @@ session_start();
 </head>
 
 <body>
+  <link rel="stylesheet" href="css/loader.css">
+  <div class="loader-wrapper">
+  <div class="loader-img">
+  <img id="loader-img" src="assets/icons/favico.png" alt="">
+  </div>
 
+  </div>
+  <script type="text/javascript">
+  window.addEventListener("load", function () {
+      const loader = document.querySelector(".loader-wrapper");
+      loader.className += " hidden-loader"; // class "loader hidden"
+  });
+  </script>
     <div class="container">
         <div class="main-container">
             <div class="main-content">
