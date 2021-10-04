@@ -11,7 +11,8 @@ $priimek = $_POST['surname'];
 $pass = $_POST['pass'];
 $path="assets/default-user.png";
 $use = 1;
-$dt=date('Y-m-d h:i:s');
+date_default_timezone_set("Europe/Ljubljana");
+$dt=date('Y-m-d H:i:s');
 
 
 
@@ -88,7 +89,7 @@ if (!empty($username) && !empty($pass) && !empty($ime)  && !empty($priimek))
       if (($use == 0)) {
           //$pass = sha1($pass1.$salt);
           $pass = password_hash($pass, PASSWORD_DEFAULT);
-
+          $username=strtolower($username);
           $query = 'INSERT INTO uporabniki (username,email,password,ime,priimek,telefonska,datum_reg,slika_profila) VALUES (?,?,?,?,?,?,?,?)';
           $pdo->prepare($query)->execute([$username, $email, $pass, $ime, $priimek, $tel, $dt, $path]);
 

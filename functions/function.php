@@ -1,4 +1,132 @@
 <?php
+if (isset($_POST['follow'])) {
+
+    include 'database.php';
+    include_once 'session.php';
+    $following_id=$_POST['following_id'];
+    $query = 'INSERT INTO foloverji (foloving_uid,folover_uid) VALUES (?,?)';
+    $pdo->prepare($query)->execute([$following_id, $_SESSION['user_id']]);
+    if(isset($_POST['profil'])){
+      $p=$_POST['profil'];
+       header("Location: ../profile.php?p=$p");
+    }else{
+       header("Location: ../index.php");
+    }
+
+
+}
+if (isset($_POST['unfollow'])) {
+
+    include 'database.php';
+    include_once 'session.php';
+    $following_id=$_POST['following_id'];
+    $query = "DELETE FROM foloverji WHERE foloving_uid = ? AND folover_uid=?";
+    $stmt = $pdo->prepare($query);
+    $pdo->prepare($query)->execute([$following_id, $_SESSION['user_id']]);
+
+    if(isset($_POST['profil'])){
+      $p=$_POST['profil'];
+       header("Location: ../profile.php?p=$p");
+    }
+}
+//komentar insert
+if (isset($_POST['post'])) {
+  include 'database.php';
+  include_once 'session.php';
+  date_default_timezone_set("Europe/Ljubljana");
+  $dt=date('Y-m-d H:i:s');
+  $komentar=$_POST['komentar'];
+
+  $following_id=$_POST['following_id'];
+  $query = 'INSERT INTO komentarji (komentar, uporabnik_id, objava_id, komenatr_date) VALUES (?,?,?,?)';
+  $pdo->prepare($query)->execute([$komentar, $_POST['uporabnik_id'], $_POST['objava_id'],$dt]);
+  $st=$_POST['article_id'];
+
+    header("Location: ../index.php#$st");
+
+
+}
+
+function posts($uid)
+{
+  include 'database.php';
+  include_once 'session.php';
+  $query = "SELECT COUNT(id) FROM objave WHERE uporabnik_id=?";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute([$uid]);
+  if ($stmt->rowCount() > 0) {
+    $post = $stmt->fetch();
+    return $post['COUNT(id)'];
+  }else{
+    return 0;
+  }
+
+}
+
+function followers($uid)
+{
+  include 'database.php';
+  include_once 'session.php';
+  $query = "SELECT COUNT(id) FROM foloverji WHERE foloving_uid=?";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute([$uid]);
+  if ($stmt->rowCount() > 0) {
+    $post = $stmt->fetch();
+    return $post['COUNT(id)'];
+  }else{
+    return 0;
+  }
+}
+
+function following($uid)
+{
+  include 'database.php';
+  include_once 'session.php';
+  $query = "SELECT COUNT(id) FROM foloverji WHERE folover_uid=?";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute([$uid]);
+  if ($stmt->rowCount() > 0) {
+    $post = $stmt->fetch();
+    return $post['COUNT(id)'];
+  }else{
+    return 0;
+  }
+}
+
+function isFollowing($uname){
+  include 'database.php';
+  include_once 'session.php';
+
+  $query = "SELECT * FROM foloverji WHERE folover_uid=?  AND foloving_uid IN (SELECT id FROM uporabniki WHERE username=?) ";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute([$_SESSION['user_id'],$uname]);
+
+  if ($stmt->rowCount() > 0 ) {
+      return   true;
+  } else {
+      return  false;
+  }
+}
+
+
+
+function noFriends(){
+  include 'database.php';
+  include_once 'session.php';
+
+  $query = "SELECT * FROM foloverji WHERE folover_uid =?";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute([$_SESSION['user_id']]);
+
+  if ($stmt->rowCount() > 0 ) {
+      $_SESSION['limit']=3;
+      return   $friends=1;
+  } else {
+      $_SESSION['limit']=5;
+      return  $friends=0;
+  }
+}
+
 
 
 function get_user()
@@ -18,50 +146,127 @@ function get_user()
 
 }
 
-function suggestions()
+function get_userProfile($uname)
 {
         include 'database.php';
         include_once 'session.php';
 
-        $query = "SELECT * FROM uporabniki WHERE id!=? ORDER BY datum_reg DESC LIMIT 3 ";
+        $query = "SELECT * FROM uporabniki WHERE username=?";
         $stmt = $pdo->prepare($query);
-        $stmt->execute([$_SESSION['user_id']]);
+        $stmt->execute([$uname]);
+
+        if ($stmt->rowCount() > 0 ) {
+            return  $stmt->fetch();
+        } else {
+            return "User not found.";
+        }
+
+}
+
+function getCommentsPost($objava_id){
+  include 'database.php';
+  include_once 'session.php';
+
+
+  $query = "SELECT * FROM komentarji k INNER JOIN uporabniki u ON uporabnik_id=u.id WHERE objava_id=? ORDER BY RAND() LIMIT 2";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute([$objava_id]);
+
+
+
+
+  while ($row = $stmt->fetch()) {
+
+    #if(isFollowing($row['username']))
+    #{
+    $cas=time_elapsed_comment($row['komenatr_date'], false);
+    echo '<div class="post__description" style="justify-content: space-between;"><span>';
+    echo '<a class="post__name--underline" href="profile.php?p='.$row['username'].'" >'.$row['username'].'</a> '.$row['komentar'].'';
+    echo '</span>
+    <span id="small">'.$cas.'</span>
+    </div>'
+    ;
+    #}
+
+    }
+
+}
+
+function suggestions()
+{
+        include 'database.php';
+        include_once 'session.php';
+        $uporabnik=$_SESSION['user_id'];
+        $query = "SELECT * FROM uporabniki WHERE id NOT IN (SELECT foloving_uid FROM foloverji WHERE folover_uid='$uporabnik') AND id!=? ORDER BY RAND() DESC LIMIT ? ";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute([$_SESSION['user_id'],$_SESSION['limit']]);
+
+        if ($stmt->rowCount() > 0 ) {
 
         while ($row = $stmt->fetch()) {
-            echo '<div class="side-menu__suggestion">';
-            echo '<a href="#" class="side-menu__suggestion-avatar">';
-            echo '<img src="'.$row['slika_profila'].'" alt="User Picture"></a>';
-            echo '<div class="side-menu__suggestion-info">';
-            echo '<a href="#">'.$row['username'].'</a>';
-            echo '<span>'.'Followed by user1 and 3 others'.'</span>';
-            echo '</div>';
-            echo '<button class="side-menu__suggestion-button">Follow</button>';
-            echo '</div>';
 
+
+          if(followers($row['id'])>0){
+            $followers=followers($row['id']);
+            $string="Followed by $followers others";
+          }else{
+            $string="New to instagram.";
+          }
+
+
+            echo '<div class="side-menu__suggestions-content">';
+            echo '<form  action="functions/function.php" method="post">';
+            echo '<div class="side-menu__suggestion">';
+            echo '<a href="profile.php?p='.$row['username'].'" class="side-menu__suggestion-avatar">';
+            echo '<img id="slika" src="'.$row['slika_profila'].'" alt="User Picture"></a>';
+            echo '<div class="side-menu__suggestion-info">';
+            echo '<a href="profile.php?p='.$row['username'].'">'.$row['username'].'</a>';
+            echo '<span>'.$string.'</span>';
+            echo '</div>';
+            echo '<input type="hidden" name="following_id" value="'.$row['id'].'">';
+            echo '<input type="submit" class="side-menu__suggestion-button" name="follow" value="Follow" />';
+            echo '</div>';
+            echo '</form>';
+
+            $_SESSION['limit_s']=4;
         }
+
+      }else{
+        echo "";
+        $_SESSION['limit_s']=8;
+      }
+
 
 }
 
 function activeFriends()
 {
+
         include 'database.php';
         include_once 'session.php';
-
-        $query = "SELECT * FROM uporabniki WHERE id!=?  LIMIT 4 ";
+        $uporabnik=$_SESSION['user_id'];
+        $query = "SELECT * FROM uporabniki WHERE id IN (SELECT foloving_uid FROM foloverji WHERE folover_uid='$uporabnik') AND active=1 LIMIT ".$_SESSION['limit_s']." ";
         $stmt = $pdo->prepare($query);
-        $stmt->execute([$_SESSION['user_id']]);
+        $stmt->execute();
 
+        if ($stmt->rowCount() > 0 ) {
         while ($row = $stmt->fetch()) {
+            $followers=followers($row['id']);
             echo '<div class="side-menu__suggestion">';
-            echo '<a href="#" class="side-menu__suggestion-avatar">';
-            echo '<img src="'.$row['slika_profila'].'" alt="User Picture"></a>';
+            echo '<a href="profile.php?p='.$row['username'].'" class="side-menu__suggestion-avatar">';
+            echo '<img id="slika" src="'.$row['slika_profila'].'" alt="User Picture"></a>';
             echo '<div class="side-menu__suggestion-info">';
-            echo '<a href="#">'.$row['username'].' <img id="active" src="assets/icons/active.png" alt="active_image"></a>';
-            echo '<span>'.'Followed by user1 and 3 others'.'</span>';
+            echo '<a href="profile.php?p='.$row['username'].'">'.$row['username'].' <img id="active" src="assets/icons/active.png" alt="active_image"></a>';
+            echo '<span >'.$followers.' followers'.'</span>';
             echo '</div>';
             echo '<button class="side-menu__suggestion-button">Chat</button>';
             echo '</div>';
-
+        }}else {
+          echo '<div class="side-menu__suggestion">';
+          echo '<div id="middle-span" class="side-menu__suggestion-info">';
+          echo '<span >No active friends.</span>';
+          echo '</div>';
+          echo '</div>';
         }
 
 }
@@ -71,20 +276,33 @@ function loadPost()
   include 'database.php';
   include_once 'session.php';
 
-  $query = "SELECT * FROM objave o INNER JOIN uporabniki u ON uporabnik_id=u.id ORDER BY datum_objave DESC ";
+
+  $query = "SELECT *,o.id AS oid FROM objave o INNER JOIN uporabniki u ON uporabnik_id=u.id  ORDER BY datum_objave DESC ";
   $stmt = $pdo->prepare($query);
   $stmt->execute();
+  $x=0;
+
 
   while ($row = $stmt->fetch()) {
-      echo '<article class="post">
+      $x=$x+1;
+      echo '<article class="post" id="'.$x.'">
           <div class="post__header">
               <div class="post__profile">';
-      echo '<a href="#" target="_blank" class="post__avatar">';
-      echo '<img src="'.$row['slika_profila'].'" alt="User Picture"></a>';
-      echo '<a href="#" target="_blank" class="post__user">'.$row['username'].' </a>';
+      echo '<a href="profile.php?p='.$row['username'].'"  class="post__avatar">';
+      echo '<img id="slika" src="'.$row['slika_profila'].'" alt="User Picture"></a>';
+      echo '<a href="profile.php?p='.$row['username'].'" class="post__user">'.$row['username'].' </a>';
       echo '</div>';
 
-      echo '<button class="post__more-options">
+      echo
+      '<script>
+      function showDiv() {
+        document.getElementById("post-menu-bg").classList.remove("hidden-menu");
+        document.getElementById("post-menu").classList.add("scale-in-center");
+        }
+      </script>';
+
+
+      echo '<button onclick="showDiv()" class="post__more-options">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="6.5" cy="11.5" r="1.5" fill="var(--text-dark)"/>
               <circle cx="12" cy="11.5" r="1.5" fill="var(--text-dark)"/>
@@ -99,11 +317,17 @@ function loadPost()
       echo '</div>';
       echo '</div>';
 
+      echo '<script>$(document).ready(function(){
+        $(".unlike").click(function(){
+          $(this).toggleClass("like");
+        });
+      })</script>';
+
       echo '  <div class="post__footer">
             <div class="post__buttons">
-                <button class="post__button">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11.4995 21.2609C11.1062 21.2609 10.7307 21.1362 10.4133 20.9001C8.2588 19.3012 3.10938 15.3239 1.81755 12.9143C0.127895 9.76543 1.14258 5.72131 4.07489 3.89968C5.02253 3.31177 6.09533 3 7.18601 3C8.81755 3 10.3508 3.66808 11.4995 4.85726C12.6483 3.66808 14.1815 3 15.8131 3C16.9038 3 17.9766 3.31177 18.9242 3.89968C21.8565 5.72131 22.8712 9.76543 21.186 12.9143C19.8942 15.3239 14.7448 19.3012 12.5902 20.9001C12.2684 21.1362 11.8929 21.2609 11.4995 21.2609ZM7.18601 4.33616C6.34565 4.33616 5.5187 4.57667 4.78562 5.03096C2.43888 6.49183 1.63428 9.74316 2.99763 12.2819C4.19558 14.5177 9.58639 18.6242 11.209 19.8267C11.3789 19.9514 11.6158 19.9514 11.7856 19.8267C13.4082 18.6197 18.799 14.5133 19.997 12.2819C21.3603 9.74316 20.5557 6.48738 18.209 5.03096C17.4804 4.57667 16.6534 4.33616 15.8131 4.33616C14.3425 4.33616 12.9657 5.04878 12.0359 6.28696L11.4995 7.00848L10.9631 6.28696C10.0334 5.04878 8.6611 4.33616 7.18601 4.33616Z" fill="var(--text-dark)" stroke="var(--text-dark)" stroke-width="0.6"/>
+                <button  class="post__button animate__animated animate__pulse">
+                    <svg class="unlike" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path id="fill" d="M11.4995 21.2609C11.1062 21.2609 10.7307 21.1362 10.4133 20.9001C8.2588 19.3012 3.10938 15.3239 1.81755 12.9143C0.127895 9.76543 1.14258 5.72131 4.07489 3.89968C5.02253 3.31177 6.09533 3 7.18601 3C8.81755 3 10.3508 3.66808 11.4995 4.85726C12.6483 3.66808 14.1815 3 15.8131 3C16.9038 3 17.9766 3.31177 18.9242 3.89968C21.8565 5.72131 22.8712 9.76543 21.186 12.9143C19.8942 15.3239 14.7448 19.3012 12.5902 20.9001C12.2684 21.1362 11.8929 21.2609 11.4995 21.2609ZM7.18601 4.33616C6.34565 4.33616 5.5187 4.57667 4.78562 5.03096C2.43888 6.49183 1.63428 9.74316 2.99763 12.2819C4.19558 14.5177 9.58639 18.6242 11.209 19.8267C11.3789 19.9514 11.6158 19.9514 11.7856 19.8267C13.4082 18.6197 18.799 14.5133 19.997 12.2819C21.3603 9.74316 20.5557 6.48738 18.209 5.03096C17.4804 4.57667 16.6534 4.33616 15.8131 4.33616C14.3425 4.33616 12.9657 5.04878 12.0359 6.28696L11.4995 7.00848L10.9631 6.28696C10.0334 5.04878 8.6611 4.33616 7.18601 4.33616Z" fill="var(--text-dark)" stroke="var(--text-dark)" stroke-width="0.6"/>
                     </svg>
                 </button>
                 <button class="post__button">
@@ -134,24 +358,95 @@ function loadPost()
                 <a href="#" class="post__likes-avatar">
                     <img src="assets/default-user.png" alt="User Picture">
                 </a>';
-                $cas=time_elapsed_string($row['datum_objave'], true);
+                $cas=time_elapsed_string($row['datum_objave'], false);
 
           echo '          <span>Liked by <a class="post__name--underline" href="#">user123</a> and <a href="#">73 others</a></span>
                 </div>
 
                 <div class="post__description">
-                    <span>
-                        <a class="post__name--underline" href="#" target="_blank">'.$row['username'].'</a> '.$row['opis'].'
+                    <span>';
 
-                    </span>
+                    if (!empty($row['opis'])) {
+                      echo '<a class="post__name--underline" href="profile.php?p='.$row['username'].'" >'.$row['username'].'</a> '.$row['opis'].'';
+                    }else {
+                      echo "";
+                    }
+
+
+
+              echo '     </span>
+                </div>';
+
+                if (null !==(getCommentsPost($row['oid']))) {
+
+                  echo getCommentsPost();
+
+                }else {
+                  echo "";
+                }
+
+
+
+                echo '<span class="post__date-time">'.$cas.'</span>
+                <form  action="functions/function.php" method="post">
+                <div class="comment_box">
+
+                <textarea style="height: 18px !important;" id="textarea'.$x.'" class="form-control" name="komentar" placeholder="Add a comment..."></textarea>
+                <input type="submit" class="comment_box_button side-menu__suggestion-button" name="post" value="Post" />
+                <input type="hidden" name="objava_id" value="'.$row['oid'].'">
+                <input type="hidden" name="uporabnik_id" value="'.$_SESSION['user_id'].'">
+                <input type="hidden" name="article_id" value="'.$x.'">
+                <script
+                src="https://code.jquery.com/jquery-3.6.0.min.js"
+                ></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.min.js">
+                </script>
+                <script>
+
+                  $(document).ready(function(){
+                    $("#textarea'.$x.'").emojioneArea({
+                      pickerPosition:"top"
+                    });
+                  });
+
+                </script>
                 </div>
-
-                <span class="post__date-time">'.$cas.'</span>
+                </form>
             </div>
         </div>
     </article>';
 
 }}
+
+function time_elapsed_comment($datetime, $full = false) {
+    $now = new DateTime;
+    $ago = new DateTime($datetime);
+    $diff = $now->diff($ago);
+
+    $diff->w = floor($diff->d / 7);
+    $diff->d -= $diff->w * 7;
+
+    $string = array(
+        'y' => 'y',
+        'm' => 'm',
+        'w' => 'w',
+        'd' => 'd',
+        'h' => 'h',
+        'i' => 'm',
+        's' => 's',
+
+    );
+    foreach ($string as $k => &$v) {
+        if ($diff->$k) {
+            $v = $diff->$k . '' . $v . ($diff->$k > 1 ? '' : '');
+        } else {
+            unset($string[$k]);
+        }
+    }
+
+    if (!$full) $string = array_slice($string, 0, 1);
+    return $string ? implode('', $string) . '' : 'just now';
+}
 
 function time_elapsed_string($datetime, $full = false) {
     $now = new DateTime;
@@ -168,6 +463,7 @@ function time_elapsed_string($datetime, $full = false) {
         'd' => 'day',
         'h' => 'hour',
         'i' => 'minute',
+        's' => 'second',
 
     );
     foreach ($string as $k => &$v) {
@@ -182,14 +478,14 @@ function time_elapsed_string($datetime, $full = false) {
     return $string ? implode(', ', $string) . ' ago' : 'just now';
 }
 
-function gallery()
+function gallery($uid)
 {
   include 'database.php';
   include_once 'session.php';
 
   $query = "SELECT * FROM objave o INNER JOIN uporabniki u ON uporabnik_id=u.id WHERE uporabnik_id=? ORDER BY datum_objave DESC ";
   $stmt = $pdo->prepare($query);
-  $stmt->execute([$_SESSION['user_id']]);
+  $stmt->execute([$uid]);
 
   while ($row = $stmt->fetch()) {
       echo '<div class="gallery-item" tabindex="0">';

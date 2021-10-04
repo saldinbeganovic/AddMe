@@ -3,7 +3,6 @@ include_once 'session.php';
 require 'database.php';
 $usern = $_POST['uname'];
 $pass = $_POST['pass'];
-//preverim, če sem prejel podatke
 
 
 if (!empty($usern) && !empty($pass)) {
@@ -24,6 +23,9 @@ if (!empty($usern) && !empty($pass)) {
          $_SESSION['priimek'] = $user['priimek'];
          $_SESSION['slika'] = $user['slika_profila'];
          $_SESSION['email'] = $user['email'];
+         $query2 = "UPDATE uporabniki SET active=1 WHERE id=?";
+         $stmt2 = $pdo->prepare($query2);
+         $stmt2->execute([$user['id']]);
          //$_SESSION['admin'] = $user['admin'];
          header("Location: ../index.php");
          echo 'uspesna prijava';

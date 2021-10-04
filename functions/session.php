@@ -1,5 +1,15 @@
 <?php
 session_start();
+date_default_timezone_set("Europe/Ljubljana");
+$_SESSION['limit_s']=4;
+
+
+
+
+
+  
+
+
 /*
 if(!isset($_SESSION['user_id'])
         && $_SERVER['REQUEST_URI']!='/etrznica/login.php'
