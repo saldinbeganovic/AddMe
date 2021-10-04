@@ -40,10 +40,46 @@
 }
 .container-profile{
   overflow: none;
+  padding-bottom: 5rem;
 }
 body{
     overflow: none;
 }
 .content-panel{
   border: none;
+}
+@media screen and (max-width: 40rem) {
+#odmik2{
+  margin-left: 10px;
+
+}
+#textarea{
+  margin-left: 10px;
+  padding-right: 10px;
+}
+.form-control{
+  width: 95%;
+}
+.emojionearea.form-control{
+  width: 95%;
+  margin-left: 10px;
+}
+.krneki{
+  width: 95%;
+}
+}
+.emojionearea .emojionearea-button {
+    z-index: 5;
+    position: absolute;
+    right: 3px;
+    left: auto;
+    top: 3px;
+    width: 24px;
+    height: 24px;
+    opacity: .6;
+    cursor: pointer;
+    -moz-transition: opacity .3s ease-in-out;
+    -o-transition: opacity .3s ease-in-out;
+    -webkit-transition: opacity .3s ease-in-out;
+    transition: opacity .3s ease-in-out;
 }

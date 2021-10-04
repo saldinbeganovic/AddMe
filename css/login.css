@@ -131,6 +131,7 @@ body {
     outline: 0;
     background-color: var(--box-bg);
     color: var(--txt-color);
+    
 }
 
 .animate-input.active span {

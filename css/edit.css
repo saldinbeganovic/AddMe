@@ -455,6 +455,27 @@ color: #ec6952;
 .drive-list-view td.size {
 color: #a2a6af;
 }
+@media screen and (max-width: 40rem) {
+.col-xs-12 {
+    width: 94%;
+    margin-left: 10px;
+}
+.container-profile {
+    padding-bottom:  5rem;
+}
+h3{
+  margin-left: 10px;
+  width:94%;
+}
+.user-info{
+  width:94%;
+    margin-left: 10px;
+}
+.side-menu-profile{
+  width:94%;
+    padding-left: 50px;
+}
+}
 
 @media (max-width:767px) {
 .view-account .content-panel .title {
@@ -622,4 +643,19 @@ textarea{
 }
 #cover{
   object-fit: cover;
+}
+.emojionearea .emojionearea-button {
+    z-index: 5;
+    position: absolute;
+    right: 3px;
+    left: auto;
+    top: 3px;
+    width: 24px;
+    height: 24px;
+    opacity: .6;
+    cursor: pointer;
+    -moz-transition: opacity .3s ease-in-out;
+    -o-transition: opacity .3s ease-in-out;
+    -webkit-transition: opacity .3s ease-in-out;
+    transition: opacity .3s ease-in-out;
 }
