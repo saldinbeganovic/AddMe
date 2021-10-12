@@ -76,7 +76,52 @@
 
 
     			</div>
+          <?php
+          if (isset($_GET['followedby'])) {
+           include 'functions/database.php';
+          echo '<div id="post-menu-bg-like'.$x.'" class="post-menu-bg-like">
+          <div id="post-menu-like'.$x.'" class="post-menu-like scale-in-center">';
+          $query = "SELECT * FROM foloverji f INNER JOIN uporabniki u ON folover_uid=u.id WHERE foloving_uid=?";
+          $stmt = $pdo->prepare($query);
+          $stmt->execute([$user_profile['id']]);
 
+          while ($likedby=$stmt->fetch()) {
+            echo '<div id="postmenulike" class="post-menu_button"><div class="post__profile">';
+
+            echo '<a href="profile.php?p='.$likedby['username'].'"  class="post__avatar">';
+            echo '<img id="slika" src="'.$likedby['slika_profila'].'" alt="User Picture"></a>';
+            echo $likedby['username'];
+            echo  '</div>';
+            echo  '</div>';
+          }
+      echo '<div class="post-menu_button"><a href="index.php#'.$_GET['aid'].'"  class="blabla"  name="close">CLOSE</a>
+          </div></div>
+          </div>';
+            }
+           ?>
+           <?php
+           if (isset($_GET['following'])) {
+             include 'functions/database.php';
+           echo '<div id="post-menu-bg-like'.$x.'" class="post-menu-bg-like">
+           <div id="post-menu-like'.$x.'" class="post-menu-like scale-in-center">';
+           $query = "SELECT * FROM foloverji f INNER JOIN uporabniki u ON foloving_uid=u.id WHERE folover_uid=?";
+           $stmt = $pdo->prepare($query);
+           $stmt->execute([$user_profile['id']]);
+
+           while ($likedby=$stmt->fetch()) {
+             echo '<div id="postmenulike" class="post-menu_button"><div class="post__profile">';
+
+             echo '<a href="profile.php?p='.$likedby['username'].'"  class="post__avatar">';
+             echo '<img id="slika" src="'.$likedby['slika_profila'].'" alt="User Picture"></a>';
+             echo $likedby['username'];
+             echo  '</div>';
+             echo  '</div>';
+           }
+       echo '<div class="post-menu_button"><a href="index.php"  class="blabla"  name="close">CLOSE</a>
+           </div></div>
+           </div>';
+             }
+            ?>
     			<div class="profile-stats">
             <?php
             $posts=posts($uid);
@@ -84,9 +129,9 @@
             $following=following($uid);
             ?>
     				<ul>
-    					<li><span class="profile-stat-count" id="text-dark"><?php echo $posts; ?></span> posts</li>
-    					<li><span class="profile-stat-count" id="text-dark"><?php echo $followers ?></span> followers</li>
-    					<li><span class="profile-stat-count" id="text-dark"><?php echo $following ?></span> following</li>
+    					<li> <a href="#" id="text-dark"><span class="profile-stat-count" id="text-dark"><?php echo $posts; ?></span> posts</a> </li>
+    					<li><a href="profile.php?followedby" id="text-dark"><span class="profile-stat-count" id="text-dark"><?php echo $followers ?></span> followers</a> </li>
+    					<li><a href="profile.php?following" id="text-dark"><span class="profile-stat-count" id="text-dark"><?php echo $following ?></span> following</a> </li>
     				</ul>
 
     			</div>

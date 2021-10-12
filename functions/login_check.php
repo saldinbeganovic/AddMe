@@ -27,6 +27,9 @@ if (!empty($usern) && !empty($pass)) {
          $stmt2 = $pdo->prepare($query2);
          $stmt2->execute([$user['id']]);
          //$_SESSION['admin'] = $user['admin'];
+
+         $_SESSION['last_login_timestamp'] = time();
+
          header("Location: ../index.php");
          echo 'uspesna prijava';
          die;

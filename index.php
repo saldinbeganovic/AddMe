@@ -1,4 +1,8 @@
 <?php
+
+
+
+
 include('main_php/header.php');
 
 
@@ -13,24 +17,7 @@ include('main_php/header.php');
 <script
 src="https://code.jquery.com/jquery-3.6.0.min.js"
 ></script>
-<div class="post-menu-bg hidden-menu">
-<div class="post-menu scale-in-center">
-<button type="button" class="post-menu_button red" name="button">UNFOLLOW</button>
-<button type="button" class="post-menu_button red" name="button">DELETE</button>
-<button type="button" class="post-menu_button" name="button">GO TO POST</button>
-<button type="button" class="post-menu_button " onclick="closeDiv()" name="close">CANCEL</button>
-</div>
-</div>
 
-<script>
-function closeDiv() {
-  document.getElementById("post-menu-bg").classList.add("hidden-menu");
-  document.getElementById("post-menu").classList.remove("scale-in-center");
-
-
-
-  }
-</script>
 
 <script type="text/javascript">
 window.addEventListener("menu_post", function () {
@@ -51,15 +38,29 @@ window.addEventListener("load", function () {
     loader.className += " hidden-loader"; // class "loader hidden"
 });
 </script>
-
+<?php $friends=noFriends(); ?>
 
     <main class="main-container">
         <section class="content-container">
             <div class="content">
+              <?php if ($friends==1){echo "";}
+              else{
+                echo '<span style="
+      justify-content: center;
+      margin: 0 auto;
+      color: #bcccdc;
+      font-style: normal;
+      font-variant: contextual;
+      font-weight: bolder;
+  ">SUGGESTED POST:</span>';
+              } ?>
 
 
                 <div class="posts">
-                    <?php loadPost(); ?>
+                  <?php if ($friends==1){loadPost();} else{loadPostSuggestions();}?>
+
+
+                    
                 </div>
             </div>
 
@@ -73,7 +74,7 @@ window.addEventListener("load", function () {
                       if(isset($_SESSION['username'])){
                         ?>
                         <a href="profile.php" ><?php echo $_SESSION['username']; ?></a>
-                        <span><?php echo $_SESSION['ime'];echo " ";echo $_SESSION['priimek']; ?></span>
+                        <span><?php if(isset($_SESSION['ime'])){ echo $_SESSION['ime'];}echo " ";if(isset($_SESSION['priimek'])){echo $_SESSION['priimek'];} ?></span>
                         <?php
                       }
                         else{
@@ -85,9 +86,9 @@ window.addEventListener("load", function () {
 
 
                     </div>
-                    <a href="functions/logout.php" class="side-menu__user-button">Switch</a>
+                    <a href="functions/logout.php" class="side-menu__user-button">Log Out</a>
                 </div><?php
-                $friends=noFriends();
+
 
                  if($friends==1){
                   ?>

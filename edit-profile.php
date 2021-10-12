@@ -42,15 +42,7 @@ window.addEventListener("load", function () {
                         </ul>
                     </div>
             		<nav class="side-menu-profile">
-        				<ul class="nav-profile">
-        					<li class="active"><a href="#" id="grad"><span class="fa fa-user"></span> Profile</a></li>
-        					<li><a href="#" id="grad"><span class="fa fa-cog"></span> Settings</a></li>
-        					<li><a href="#" id="grad"><span class="fa fa-credit-card"></span> Billing</a></li>
-        					<li><a href="#" id="grad"><span class="fa fa-envelope"></span> Messages</a></li>
-
-        					<li><a href="user-drive.html" id="grad"><span class="fa fa-th"></span> Drive</a></li>
-        					<li><a href="#" id="grad"><span class="fa fa-clock-o"></span> Reminders</a></li>
-        				</ul>
+        				
         			</nav>
                 </div>
                 <div class="content-panel">

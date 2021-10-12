@@ -1,5 +1,7 @@
 <?php
 include_once 'functions/session.php';
+require 'glogin/vendor/autoload.php';
+include 'functions/database.php';
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -122,16 +124,102 @@ include_once 'functions/session.php';
                                 <div></div>
                             </div>
                             <div class="btn-group">
-                                <a href="" class="btn-fb">
+                                <a href="facebook-login/login.php" class="btn-fb">
                                     <img src="assets/icons/facebook-icon.png" alt="">
                                     <span>Log in with Facebook</span>
                                 </a>
                             </div>
                             <div class="btn-group">
-                                <a href="" class="btn-gl">
-                                    <img src="assets/icons/google_search_new_logo_icon_159150.png" alt="">
-                                    <span>Log in with Google</span>
-                                </a>
+                              <?php // Creating new google client instance
+                              $client = new Google_Client();
+
+                              // Enter your Client ID
+                              $client->setClientId('1084902849777-kq73s52850eraic8hkng534c51rqujsr.apps.googleusercontent.com');
+                              // Enter your Client Secrect
+                              $client->setClientSecret('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');
+                              // Enter the Redirect URL
+                              $client->setRedirectUri('https://addme.saldinbeganovic.si/login-form.php');
+
+                              // Adding those scopes which we want to get (email & profile Information)
+                              $client->addScope("email");
+                              $client->addScope("profile");
+
+
+                              if(isset($_GET['code'])):
+
+                                  $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+
+                                  if(!isset($token["error"])){
+
+                                      $client->setAccessToken($token['access_token']);
+
+                                      // getting profile information
+                                      $google_oauth = new Google_Service_Oauth2($client);
+                                      $google_account_info = $google_oauth->userinfo->get();
+
+                                      // Storing data into database
+                                      $id = /*mysqli_real_escape_string*/($google_account_info->id);
+                                      $full_name = (trim($google_account_info->name));
+                                      $email = ($google_account_info->email);
+                                      $profile_pic = ($google_account_info->picture);
+
+                                      // checking user already exists or not
+                                      $get_user = "SELECT * FROM uporabniki WHERE google_id=?";
+
+
+                                        $user = $pdo->prepare($get_user);
+                                        $user->execute([$id]);
+                                        $google_id = $user->fetch();
+
+                                        $stmt = $pdo->prepare("SELECT * FROM uporabniki WHERE google_id=?");
+                                        $stmt->execute([$id]);
+                                        $userExists = $stmt->fetchColumn();
+
+
+                                        if($userExists){
+                                            //echo $id;
+                                            $_SESSION['user_id'] = $google_id['id'];
+                                            $_SESSION['username'] = $google_id['username'];
+                                            header('Location: index.php');
+                                            exit;
+
+
+                                      }
+                                      else{
+
+                                          // if user not exists we will insert the user
+                                        $username=preg_replace('/[ ]+/', '.', trim($full_name));
+                                          $insert = 'INSERT INTO uporabniki(google_id,ime,username,email,slika_profila) VALUES (?,?,?,?,?)';
+                                          $pdo->prepare($insert)->execute([$id,$full_name,$username,$email,$profile_pic]);
+
+                                          $googleId = "SELECT * FROM uporabniki WHERE google_id=?";
+                                          $google = $pdo->prepare($googleId);
+                                          $google->execute([$id]);
+                                          $user = $google->fetch();
+                                          $_SESSION['user_id'] = $user['id'];
+                                          $_SESSION['username'] = $user['username'];
+
+
+                                          header('location:index.php');
+
+                                      }
+
+                                  }
+                                  else{
+                                      header('Location: login.php');
+                                      exit;
+                                  }
+
+                              else:
+                                  // Google Login Url = $client->createAuthUrl();
+                              ?>
+
+                                  <a href="<?php echo $client->createAuthUrl(); ?>"class="btn-gl">
+                                            <img src="assets/icons/google_search_new_logo_icon_159150.png" alt="">
+                                            <span>Log in with Google</span>
+                                            </a>
+
+                              <?php endif; ?>
                             </div>
                             <a href="passreset-form.php" class="forgot-pw">Forgot password?</a>
                         </div>
