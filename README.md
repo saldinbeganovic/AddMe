@@ -6,6 +6,10 @@ Description:
 -Addme project is a clone of Instagram. 
 
 Features: You can like, comment and post photos, Login feature using Google and Facebook API, Creating post and sharing them, You can follow other people and they can follow you, Explore page if you dont follow anyone or suggested post on home page, Editing your profile and bio...
+
+Technologies: This website is using HTML, CSS, PHP and JS
+
+More features cooming soon..
          
 
 
