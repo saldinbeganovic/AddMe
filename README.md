@@ -10,6 +10,10 @@ Features: -You can like, comment and post photos.
           -Explore page if you dont follow anyone or suggested post on home page.
           -Editing your profile and bio...
      
+ Markup : 1. A numbered list
+              1. A nested numbered list
+              2. Which is numbered
+          2. Which is numbered
 
 
 
