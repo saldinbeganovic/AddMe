@@ -2,12 +2,13 @@
 Project name: AddMe social network - https://addme.saldinbeganovic.si/
 
 Description: Addme project is a clone of Instagram. 
-                -You can like, comment and post photos. 
-                -Login feature using Google and Facebook API.
-                -Creating post and sharing them.
-                -You can follow other people and they can follow you.
-                -Explore page if you dont follow anyone or suggested post on home page.
-                -Editing your profile and bio...
+
+Features: -You can like, comment and post photos. 
+          -Login feature using Google and Facebook API.
+          -Creating post and sharing them.
+          -You can follow other people and they can follow you.
+          -Explore page if you dont follow anyone or suggested post on home page.
+          -Editing your profile and bio...
      
 
 
